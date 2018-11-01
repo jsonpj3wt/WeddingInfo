@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Commands\" />
+    <Folder Include="Enumerations\" />
+    <Folder Include="Context\" />
+    <Folder Include="Queries\" />
+    <Folder Include="Commands\CreateUser\" />
+    <Folder Include="Commands\UpdateUser\" />
+    <Folder Include="Commands\CreateEvent\" />
+    <Folder Include="Commands\UpdateEvent\" />
+    <Folder Include="Commands\CreateLocation\" />
+    <Folder Include="Commands\UpdateLocation\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Queries\Events\" />
+    <Folder Include="Queries\Locations\" />
+    <Folder Include="Queries\Users\" />
+    <Folder Include="Commands\DeleteEvent\" />
+    <Folder Include="Commands\DeleteLocation\" />
+    <Folder Include="Commands\DeleteUser\" />
+    <Folder Include="MigrationContextFactories\" />
+    <Folder Include="Commands\UpdateBulkUser\" />
+    <Folder Include="Commands\RegisterEvent\" />
+    <Folder Include="Commands\UnregisterEvent\" />
+    <Folder Include="Queries\Lodgings\" />
+    <Folder Include="Commands\CreateLodging\" />
+    <Folder Include="Commands\DeleteLodging\" />
+    <Folder Include="Commands\UpdateLodging\" />
+    <Folder Include="Queries\Registries\" />
+    <Folder Include="Commands\CreateRegistry\" />
+    <Folder Include="Commands\DeleteRegistry\" />
+    <Folder Include="Commands\UpdateRegistry\" />
+    <Folder Include="Commands\CreateHomeComponent\" />
+    <Folder Include="Commands\UpdateHomeComponent\" />
+    <Folder Include="Queries\HomeComponents\" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
+    <PackageReference Include="MediatR" Version="5.1.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
+    <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="1.1.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+    <Compile Remove="Commands\EmptyClass.cs" />
+    <Compile Remove="Migrations\20181015212644_initial.cs" />
+    <Compile Remove="Migrations\20181015222457_initial.cs" />
+    <Compile Remove="Migrations\20181015224036_initial.cs" />
+    <Compile Remove="Migrations\20181017061603_initial.cs" />
+    <Compile Remove="Migrations\20181017232842_initial.cs" />
+    <Compile Remove="Migrations\20181022114132_initial.Designer.cs" />
+    <Compile Remove="Migrations\20181022114132_initial.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Interactive.Async">
+      <HintPath>..\..\..\..\..\..\usr\local\share\dotnet\sdk\NuGetFallbackFolder\system.interactive.async\3.1.1\lib\netstandard1.3\System.Interactive.Async.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
