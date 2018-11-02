@@ -1,0 +1,29 @@
+<div class="container">
+        <app-spinner *ngIf="loading"></app-spinner>
+    <div *ngIf="!loading">
+        <p>Below are the list of registries.</p>
+        <div class="row registry-row" *ngFor="let registry of registries; index as registryIndex">
+            <a class="registry-row" mz-button [flat]="true" [href]="registry.website">
+            <img [src]="registry.imageSrc" />
+            </a>
+            <a mz-button [flat]="true" *ngIf="admin" (click)="onEdit(registry.id)"><i mz-icon-mdi mz-input-prefix
+                [icon]="'pencil'">
+            </i></a>
+            <a mz-button [flat]="true" *ngIf="admin" (click)="onDeleteConfirm(registryIndex)"><i mz-icon-mdi mz-input-prefix
+                [icon]="'delete'">
+            </i></a>
+            <mz-modal #basicModal>
+                <mz-modal-header>
+                    <h4>Confirm Delete</h4>
+                </mz-modal-header>
+                <mz-modal-content>
+                    Are you sure you want to delete this Event?
+                </mz-modal-content>
+                <mz-modal-footer>
+                    <button class="green-text" mz-button [flat]="true" mz-modal-close>No</button>
+                    <button class="red-text" mz-button [flat]="true" mz-modal-close (click)="onDelete(registry.id)">Yes</button>
+                </mz-modal-footer>
+            </mz-modal>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,230 @@
+<div class="container">
+    <app-spinner *ngIf="loading"></app-spinner>
+    <form #rsvpForm *ngIf="!loading" ngNativeValidate (ngSubmit)="onRsvp()" (keydown.enter)="handleEnterKeyPress($event)">
+        <div class="row">
+            <div class="col m3">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'school'">
+                    </i>
+                    <input mz-input
+                        [label]="'Title'"
+                        [(ngModel)]="user.title"
+                        [validate]="true"
+                        [dataError]="'title is invalid'"
+                        [dataSuccess]="'title is valid'"
+                        id="title"
+                        name="title"
+                        length="100"
+                        type="text">
+                </mz-input-container>
+            </div>
+            <div class="col m3">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'account'">
+                    </i>
+                    <input mz-input mz-validation required
+                        [label]="'First Name'"
+                        [(ngModel)]="user.firstName"
+                        [validate]="true"
+                        [dataError]="'first name is invalid'"
+                        [dataSuccess]="'first name is valid'"
+                        id="firstName"
+                        name="first"
+                        length="36"
+                        type="text">
+                </mz-input-container>
+            </div>
+            <div class="col m3">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'account'">
+                    </i>
+                    <input mz-input
+                        [label]="'Middle Name'"
+                        [(ngModel)]="user.middleName"
+                        id="middleName"
+                        name="middle"
+                        length="36"
+                        type="text">
+                </mz-input-container>
+            </div>
+            <div class="col m3">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'account'">
+                    </i>
+                    <input mz-input mz-validation required
+                        [label]="'Last Name'"
+                        [(ngModel)]="user.lastName"
+                        [validate]="true"
+                        [dataError]="'last name is invalid'"
+                        [dataSuccess]="'last name is valid'"
+                        id="lastName"
+                        name="last"
+                        length="36"
+                        type="text">
+                </mz-input-container>
+            </div>
+        </div>
+        <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix
+                [icon]="'google-maps'">
+            </i>
+            <app-spinner *ngIf="loadingMap"></app-spinner>
+            <input *ngIf="!loadingMap" mz-input ngx-google-places-autocomplete [options]="{
+                types: []
+                }" [value]="user.address" #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/>
+        </mz-input-container>
+        <div class="row">
+            <div class="col m4">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'home'">
+                    </i>
+                    <input mz-input mz-validation required
+                        [label]="'Household'"
+                        [(ngModel)]="user.household"
+                        [validate]="true"
+                        [dataError]="'Household is invalid'"
+                        [dataSuccess]="'Household is valid'"
+                        id="household"
+                        name="household"
+                        length="36"
+                        type="text">
+                </mz-input-container>
+            </div>
+            <div class="col m4">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'email'">
+                    </i>
+                    <input mz-input mz-validation required
+                        [label]="'Email'"
+                        [(ngModel)]="user.email"
+                        [validate]="true"
+                        [dataError]="'Email is invalid'"
+                        [dataSuccess]="'Email is valid'"
+                        id="email"
+                        name="email"
+                        length="100"
+                        type="email">
+                </mz-input-container>
+            </div>
+            <div class="col m4">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'phone'">
+                    </i>
+                    <input mz-input mz-validation required
+                        [label]="'Phone'"
+                        [(ngModel)]="user.phoneNumber"
+                        [validate]="true"
+                        [dataError]="'Phone is invalid'"
+                        [dataSuccess]="'Phone is valid'"
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        value="1-800-555-6677">
+                </mz-input-container>
+            </div>
+            <div class="col m6">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'lock'">
+                    </i>
+                    <input mz-input mz-validation required
+                        [label]="'Password'"
+                        [(ngModel)]="user.password"
+                        id="password"
+                        name="password"
+                        length="20"
+                        type="password">
+                </mz-input-container>
+            </div>
+            <div class="col m6">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'lock'">
+                    </i>
+                    <input mz-input mz-validation required
+                        [label]="'Confirm Password'"
+                        [(ngModel)]="confirmPassword"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        length="20"
+                        type="password"
+                        [validate]="true"
+                        [dataError]="'Password not match'"
+                        [dataSuccess]="'Password Match'"
+                        [pattern]="user.password">
+                </mz-input-container>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col m6">
+                <mz-input-container class="col s12 m6">
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'clipboard-account'">
+                    </i>
+                    <input mz-input
+                        [label]="'Icon Link'"
+                        [(ngModel)]="user.icon"
+                        id="icon"
+                        name="icon"
+                        type="url">
+                </mz-input-container>
+            </div>
+            <div class="col m2">
+                    <img *ngIf="user.icon" width="64" height="64" style="border-radius: 50%" [src]="user.icon">
+                </div>
+        </div>
+        <div class="row">
+            <div class="col m6">
+                <mz-input-container class="col s12 m6">
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'account-multiple-plus'">
+                    </i>
+                    <input mz-input
+                        [label]="'Number of Guests'"
+                        [(ngModel)]="user.guests"
+                        id="guests"
+                        name="guests"
+                        type="number">
+                </mz-input-container>
+            </div>
+            <div class="col m2">
+                <mz-checkbox-container>
+                    <input mz-checkbox
+                        [label]="'Is Attending?'"
+                        id="isAttending"
+                        [(ngModel)]="user.isAttending"
+                        name="isAttending"
+                        type="checkbox">
+                </mz-checkbox-container>
+            </div>
+        </div>
+        <mz-textarea-container>
+            <i mz-icon-mdi mz-textarea-prefix
+                [icon]="'message-reply-text'">
+            </i>
+            <textarea mz-textarea
+                [(ngModel)]="user.dietary"
+                [label]="'Dietary Restrictions'"
+                id="textarea-dietary"
+                name="dietary"
+                length="300"></textarea>
+        </mz-textarea-container>
+
+        <div class="row">
+            <div class="col s4">
+                    <button mz-button type="submit">
+                    <i mz-icon-mdi [icon]="'content-save'" [align]="'left'"></i>
+                        rsvp
+                    </button>
+            </div>
+        </div>
+    </form>
+</div>

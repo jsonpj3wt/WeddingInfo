@@ -1,0 +1,65 @@
+<header>
+    <mz-sidenav #sidenav 
+        class="custom-hide-nav-on-large-only" 
+        [id]="'sidenav'" 
+        [closeOnClick]="true" 
+        [backgroundClass]="'sidenav-background'"
+        [collapseButtonId]="'btn-sidenav'" [fixed]="true">
+
+        <mz-sidenav-header>
+            <a [routerLink]="''">
+                <img class="angular-logo" src="assets/wedding.png">
+            </a>
+            <h5 class="materialize-name center-align white-text">Sarah and Jason</h5>
+        </mz-sidenav-header>
+        <mz-sidenav-link><a routerLink="rsvp">RSVP</a></mz-sidenav-link>
+        <mz-sidenav-link *ngIf="authenticated && admin"><a routerLink="viewRsvp">View RSVP</a></mz-sidenav-link>
+        <mz-sidenav-collapsible *ngIf="authenticated">
+            <mz-sidenav-collapsible-header>
+              <i mz-icon-mdi [icon]="'chevron-down'" class="grey-text caret"></i><span class="grey-text">Locations</span>
+            </mz-sidenav-collapsible-header>
+            <mz-sidenav-collapsible-content>
+                <mz-sidenav-link *ngIf="authenticated && admin"><a routerLink="createLocation">Create Location</a></mz-sidenav-link>
+                <mz-sidenav-link *ngIf="authenticated"><a routerLink="viewLocations">View Locations</a></mz-sidenav-link>
+            </mz-sidenav-collapsible-content>
+        </mz-sidenav-collapsible>
+        <mz-sidenav-collapsible *ngIf="authenticated">
+            <mz-sidenav-collapsible-header>
+              <i mz-icon-mdi [icon]="'chevron-down'" class="grey-text caret"></i><span class="grey-text">Events</span>
+            </mz-sidenav-collapsible-header>
+            <mz-sidenav-collapsible-content>
+                <mz-sidenav-link *ngIf="authenticated"><a routerLink="createEvent">Create Event</a></mz-sidenav-link>
+                <mz-sidenav-link *ngIf="authenticated"><a routerLink="viewEvents">View Events</a></mz-sidenav-link>
+            </mz-sidenav-collapsible-content>
+        </mz-sidenav-collapsible>
+        <mz-sidenav-collapsible *ngIf="authenticated">
+            <mz-sidenav-collapsible-header>
+              <i mz-icon-mdi [icon]="'chevron-down'" class="grey-text caret"></i><span class="grey-text">Lodging</span>
+            </mz-sidenav-collapsible-header>
+            <mz-sidenav-collapsible-content>
+                <mz-sidenav-link *ngIf="authenticated && admin"><a routerLink="createLodging">Create Lodging</a></mz-sidenav-link>
+                <mz-sidenav-link *ngIf="authenticated"><a routerLink="viewLodgings">View Lodgings</a></mz-sidenav-link>
+            </mz-sidenav-collapsible-content>
+        </mz-sidenav-collapsible>
+        <mz-sidenav-collapsible *ngIf="authenticated">
+            <mz-sidenav-collapsible-header>
+              <i mz-icon-mdi [icon]="'chevron-down'" class="grey-text caret"></i><span class="grey-text">Registry</span>
+            </mz-sidenav-collapsible-header>
+            <mz-sidenav-collapsible-content>
+                <mz-sidenav-link *ngIf="authenticated && admin"><a routerLink="createRegistry">Create Registry</a></mz-sidenav-link>
+                <mz-sidenav-link *ngIf="authenticated"><a routerLink="viewRegistries">View Registries</a></mz-sidenav-link>
+            </mz-sidenav-collapsible-content>
+        </mz-sidenav-collapsible>
+        <mz-sidenav-link *ngIf="authenticated"><a routerLink="uploads">Image Uploads</a></mz-sidenav-link>
+        <mz-sidenav-divider></mz-sidenav-divider>
+        <mz-sidenav-link>
+            <mz-sidenav-link *ngIf="!authenticated"><a routerLink="login">Login</a></mz-sidenav-link>
+            <mz-sidenav-link *ngIf="authenticated"><a (click)="logout()">Logout</a></mz-sidenav-link>
+        </mz-sidenav-link>
+    </mz-sidenav>
+
+    <button mz-button (click)="changeNavWidth()" class="sidenav-button custom-hide-on-large-only" id="btn-sidenav"
+        [float]="true" [large]="true">
+        <i mz-icon-mdi [icon]="'menu'"></i>
+    </button>
+</header>

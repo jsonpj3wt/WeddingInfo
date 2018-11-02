@@ -1,0 +1,36 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./_variables";
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+@import url('https://fonts.googleapis.com/css?family=Farsan|Fredericka+the+Great|Julius+Sans+One|Megrim|Poiret+One');
+
+* {
+    font-family: 'Poiret One', cursive;
+    font-size: 24px;
+}
+
+input[type="text"], textarea.materialize-textarea, label
+{
+    font-size:1.5rem !important;
+}
+
+@for $index from 1 through 6 {
+    h#{$index}{
+        font-family: 'Julius Sans One', sans-serif;
+        font-weight: bolder;
+    }
+  }
+
+.collapsible-body {
+    background: rgba(255,255,255,0.5);
+}
+
+.collapsible-header {
+    background-color: #e8e9eba6;
+}
+
+.modal-img {
+    display: block;
+    margin: auto;
+    max-width: 100%;
+}

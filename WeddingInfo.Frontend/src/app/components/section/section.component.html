@@ -1,0 +1,96 @@
+<div *ngIf="!section.isParallax && !canEdit">
+    <h5 *ngIf="canEdit" class="light">
+            <mz-input-container>
+                <i mz-icon-mdi mz-input-prefix
+                    [icon]="'format-text'">
+                </i>
+                <input mz-input
+                    [label]="'Header'"
+                    [(ngModel)]="section.header"
+                    name="header"
+                    length="150"
+                    type="text">
+            </mz-input-container>
+        </h5>
+        <h5 *ngIf="!canEdit" class="light">{{section.header}}</h5>
+        <app-editor
+            [content]="section.text"
+            [contentId]="section.id"
+            [editMode]="canEdit"
+            [editorType]="'section'"
+            (onEditorKeyup)="textHandler($event)"
+            (onSave)="onSave($event)"
+        ></app-editor>
+</div>
+
+<mz-card *ngIf="section.isParallax || canEdit" [ngClass]="{'parallax-card': section.isParallax}">
+    <mz-card-content>
+        <a mz-button
+            [flat]="true" 
+            *ngIf="canEdit" 
+            (click)="onAddTopParallax()"><i mz-icon-mdi mz-input-prefix
+            [icon]="'plus-circle-outline'"> Add Top Parallax
+        </i></a>
+        <mz-parallax
+        *ngIf="section.topParallax"
+        [height]="300">
+            <img *ngIf="!loading" class="parallax-image" [src]="section.topParallax.imgUrl">
+        </mz-parallax>
+
+        <div class="parallax-section">
+            <h5 *ngIf="canEdit" class="light">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'format-text'">
+                    </i>
+                    <input mz-input
+                        [label]="'Header'"
+                        [(ngModel)]="section.header"
+                        name="header"
+                        length="150"
+                        type="text">
+                </mz-input-container>
+            </h5>
+            <h5 *ngIf="!canEdit" class="light">{{section.header}}</h5>
+            <app-editor
+                [content]="section.text"
+                [contentId]="section.id"
+                [editMode]="canEdit"
+                [editorType]="'section'"
+                (onEditorKeyup)="textHandler($event)"
+                (onSave)="onSave($event)"
+            ></app-editor>
+        </div>
+
+        <a mz-button
+            [flat]="true" 
+            *ngIf="canEdit" 
+            (click)="onAddBottomParallax()"><i mz-icon-mdi mz-input-prefix
+            [icon]="'plus-circle-outline'"> Add Bottom Parallax
+        </i></a>
+        <mz-parallax
+        *ngIf="section.bottomParallax"
+        [height]="300">
+            <img *ngIf="!loading" class="parallax-image" [src]="section.bottomParallax.imgUrl">
+        </mz-parallax>
+        
+    </mz-card-content>
+</mz-card>
+
+<mz-modal #topUploadModal [fixedFooter]="true">
+    <mz-modal-content>
+        <app-image-uploader [uploadInputEvent]="uploadInputEvent" (uploadComplete)="onSetTopParallax($event)"></app-image-uploader>
+    </mz-modal-content>
+    <mz-modal-footer>
+        <button class="green-text" mz-button [flat]="true" mz-modal-close>Close</button>
+    </mz-modal-footer>
+</mz-modal>
+
+<mz-modal #bottomUploadModal [fixedFooter]="true">
+    <mz-modal-content>
+        <app-image-uploader [uploadInputEvent]="uploadInputEvent" (uploadComplete)="onSetBottomParallax($event)"></app-image-uploader>
+    </mz-modal-content>
+    <mz-modal-footer>
+        <button class="green-text" mz-button [flat]="true" mz-modal-close>Close</button>
+    </mz-modal-footer>
+</mz-modal>

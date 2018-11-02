@@ -1,0 +1,23 @@
+.parallax-card #{'/deep/'} {
+
+  .card-content {
+    padding: 0;
+  }
+
+  .parallax-container {
+    z-index: 1;
+  }
+
+  .parallax-section {
+    padding: 32px;
+    background: rgba(255,255,255,0.5);
+  }
+
+  .parallax-image {
+    height: 650px;
+  }
+
+  a {
+    word-wrap: break-word;
+  }
+}

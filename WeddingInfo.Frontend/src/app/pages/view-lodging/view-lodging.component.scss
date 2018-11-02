@@ -1,0 +1,21 @@
+.modal-img {
+    display: block;
+    margin: auto;
+}
+
+.swiper-img {
+    max-width: 600px;
+}
+
+iframe {
+    display: block;
+    margin: auto;
+}
+
+#{'/deep/'} .collapsible-body {
+    background: rgba(255,255,255,0.5);
+}
+
+#{'/deep/'} .collapsible-heaser {
+    background-color: #e8e9eba6;
+}

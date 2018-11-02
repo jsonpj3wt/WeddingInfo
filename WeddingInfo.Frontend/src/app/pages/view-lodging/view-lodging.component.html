@@ -1,0 +1,92 @@
+<div class="container">
+        <app-spinner *ngIf="loading"></app-spinner>
+    <div *ngIf="!loading">
+        
+        <mz-collapsible [mode]="'accordion'" [popout]="true">
+            <mz-collapsible-item *ngFor="let lodging of lodgings; first as isFirst; index as lodgingIndex" [active]="isFirst">
+                <mz-collapsible-item-header>
+                {{lodging.name}}
+                </mz-collapsible-item-header>
+                <mz-collapsible-item-body>
+                <a mz-button [flat]="true" *ngIf="admin" (click)="onEdit(lodging.id)"><i mz-icon-mdi mz-input-prefix
+                    [icon]="'pencil'">
+                </i></a>
+                <a mz-button [flat]="true" *ngIf="admin" (click)="onDeleteConfirm(lodgingIndex)"><i mz-icon-mdi mz-input-prefix
+                    [icon]="'delete'">
+                </i></a>
+                <mz-modal #basicModal>
+                    <mz-modal-header>
+                        <h4>Confirm Delete</h4>
+                    </mz-modal-header>
+                    <mz-modal-content>
+                        Are you sure you want to delete this Event?
+                    </mz-modal-content>
+                    <mz-modal-footer>
+                        <button class="green-text" mz-button [flat]="true" mz-modal-close>No</button>
+                        <button class="red-text" mz-button [flat]="true" mz-modal-close (click)="onDelete(lodging.id)">Yes</button>
+                    </mz-modal-footer>
+                </mz-modal>
+                <p>{{lodging.description}}</p>
+                <p>
+                    <a href="https://www.google.com/maps/search/?api=1&query={{lodging.address}}" target="_blank"><i mz-icon-mdi
+                        [icon]="'map'">
+                    </i> {{lodging.address}}</a>
+                </p>
+                <p>
+                    <a [href]="lodging.website" target="_blank"><i mz-icon-mdi
+                        [icon]="'web'">
+                    </i> Website</a>
+                </p>
+                <div *ngIf="lodging.images.length > 0">
+                    <h3>Images</h3>
+                    <swiper #imageSwiper class="swiper-container" fxFlex="auto" [config]="swiperConfig" (swiperDoubleTap)="onSwiperClick(lodgingIndex)">
+                        <div class="swiper-slide" *ngFor="let sm of lodging.images">
+                            <img [src]="sm.path">
+                        </div>
+                    </swiper>
+                </div>
+                <div *ngIf="lodging.videos.length > 0">
+                    <h3>Videos</h3>
+                    <swiper class="swiper-container" fxFlex="auto" [config]="swiperConfig" (indexChange)="onIndexChange($event)">
+                            <div class="swiper-slide" *ngFor="let sm of lodging.videos">
+                                <youtube-player
+                                [videoId]="sm.path"
+                                (ready)="savePlayer($event)"
+                                (change)="onStateChange($event)"
+                            >
+                            </youtube-player>
+                        </div>
+                    </swiper>
+                </div>
+                </mz-collapsible-item-body>
+            </mz-collapsible-item>
+            <mz-collapsible-item> 
+                <mz-collapsible-item-header>
+                    Other Options
+                </mz-collapsible-item-header>
+                <mz-collapsible-item-body>
+                    <p>These are all the hotels in the area beyond the recommended lodgings.</p>
+                    <p>
+                        <a href="https://www.google.com/maps/search/?api=1&query={{'Salida, CO Hotels'}}" target="_blank"><i mz-icon-mdi
+                            [icon]="'map'">
+                        </i> {{'Salida, CO Hotels'}}</a>
+                    </p>
+                    <p>
+                        <a href="https://www.google.com/maps/search/?api=1&query={{'Buena Vista, CO Hotels'}}" target="_blank"><i mz-icon-mdi
+                            [icon]="'map'">
+                        </i> {{'Buena Vista, CO Hotels'}}</a>
+                    </p>
+
+                </mz-collapsible-item-body>
+            </mz-collapsible-item>
+        </mz-collapsible>
+    </div>
+</div>
+<mz-modal #imageModal [fixedFooter]="true" [fullscreen]="true">
+    <mz-modal-content>
+        <img class="modal-img" [src]="modalImageSrc">
+    </mz-modal-content>
+    <mz-modal-footer>
+        <button class="green-text" mz-button [flat]="true" mz-modal-close>Close</button>
+    </mz-modal-footer>
+</mz-modal>

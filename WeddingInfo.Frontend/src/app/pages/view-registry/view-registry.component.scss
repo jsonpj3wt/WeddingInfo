@@ -1,0 +1,15 @@
+.registry-row {
+    height: 128px;
+}
+
+img {
+    max-width: 128px;
+}
+
+#{'/deep/'} .collapsible-body {
+    background: rgba(255,255,255,0.5);
+}
+
+#{'/deep/'} .collapsible-heaser {
+    background-color: #e8e9eba6;
+}

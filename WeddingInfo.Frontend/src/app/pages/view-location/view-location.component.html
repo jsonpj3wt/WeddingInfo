@@ -1,0 +1,72 @@
+<div class="container">
+        <app-spinner *ngIf="loading"></app-spinner>
+    <div *ngIf="!loading">
+        <mz-collapsible [mode]="'accordion'" [popout]="true">
+            <mz-collapsible-item #collapsibleItem *ngFor="let loc of locations; first as isFirst; index as locIndex" [active]="isFirst" >
+                <mz-collapsible-item-header>
+                {{loc.name}}
+                </mz-collapsible-item-header>
+                <mz-collapsible-item-body>
+                <a mz-button [flat]="true" *ngIf="admin" (click)="onEdit(loc.id)"><i mz-icon-mdi mz-input-prefix
+                    [icon]="'pencil'">
+                </i></a>
+                <a mz-button [flat]="true" *ngIf="admin" (click)="onDeleteConfirm(locIndex)"><i mz-icon-mdi mz-input-prefix
+                    [icon]="'delete'">
+                </i></a>
+                <mz-modal #basicModal>
+                    <mz-modal-header>
+                        <h4>Confirm Delete</h4>
+                    </mz-modal-header>
+                    <mz-modal-content>
+                        Are you sure you want to delete this Event?
+                    </mz-modal-content>
+                    <mz-modal-footer>
+                        <button class="green-text" mz-button [flat]="true" mz-modal-close>No</button>
+                        <button class="red-text" mz-button [flat]="true" mz-modal-close (click)="onDelete(loc.id)">Yes</button>
+                    </mz-modal-footer>
+                </mz-modal>
+                <p>{{loc.description}}</p>
+                <p>
+                    <a href="https://www.google.com/maps/search/?api=1&query={{loc.address}}" target="_blank"><i mz-icon-mdi
+                        [icon]="'map'">
+                    </i> {{loc.address}}</a>
+                </p>
+                <p>
+                    <a [href]="loc.website" target="_blank"><i mz-icon-mdi
+                        [icon]="'web'">
+                    </i> Website</a>
+                </p>
+                <div *ngIf="loc.images.length > 0">
+                    <h3>Images</h3>
+                    <swiper #imageSwiper class="swiper-container" fxFlex="auto" [config]="swiperConfig" (swiperDoubleTap)="onSwiperClick(locIndex)">
+                        <div class="swiper-slide" *ngFor="let sm of loc.images">
+                            <img class="swiper-img modal-img" [src]="sm.path">
+                        </div>
+                    </swiper>
+                </div>
+                <div *ngIf="loc.videos.length > 0">
+                    <h3>Videos</h3>
+                    <swiper class="swiper-container" fxFlex="auto" [config]="swiperConfig" (indexChange)="onIndexChange($event)">
+                            <div class="swiper-slide" *ngFor="let sm of loc.videos">
+                                <youtube-player
+                                [videoId]="sm.path"
+                                (ready)="savePlayer($event)"
+                                (change)="onStateChange($event)"
+                            >
+                            </youtube-player>
+                        </div>
+                    </swiper>
+                </div>
+                </mz-collapsible-item-body>
+            </mz-collapsible-item>
+        </mz-collapsible>
+    </div>
+</div>
+<mz-modal #imageModal [fixedFooter]="true" [fullscreen]="true">
+    <mz-modal-content>
+        <img class="modal-img" [src]="modalImageSrc">
+    </mz-modal-content>
+    <mz-modal-footer>
+        <button class="green-text" mz-button [flat]="true" mz-modal-close>Close</button>
+    </mz-modal-footer>
+</mz-modal>

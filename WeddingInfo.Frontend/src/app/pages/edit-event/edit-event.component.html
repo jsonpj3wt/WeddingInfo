@@ -1,0 +1,202 @@
+<div class="container">
+    <app-spinner *ngIf="loading"></app-spinner>
+    <form #editForm *ngIf="!loading" ngNativeValidate (ngSubmit)="onEdit()" (keydown.enter)="handleEnterKeyPress($event)">
+        <div class="row">
+            <div class="col m4">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'format-title'">
+                    </i>
+                    <input mz-input mz-validation required
+                        [label]="'Name'"
+                        [(ngModel)]="theEvent.name"
+                        [validate]="true"
+                        [dataError]="'name is invalid'"
+                        [dataSuccess]="'name is valid'"
+                        id="name"
+                        name="name"
+                        length="150"
+                        type="text">
+                </mz-input-container>
+            </div>
+            <div class="col m4">
+                <mz-datepicker-container>
+                <input mz-datepicker mz-validation required
+                    [label]="'Occurrence'"
+                    [options]="dateOptions"
+                    [(ngModel)]="theEvent.occurance"
+                    id="datepicker"
+                    name="occurance"
+                    placeholder="Select date"
+                    type="text">
+                </mz-datepicker-container>
+            </div>
+            <div class="col m4">
+                <mz-timepicker-container class="col s12 m6">
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'clock'">
+                    </i>
+                    <input mz-timepicker
+                        [label]="'Time'"
+                        id="basic-timepicker"
+                        [(ngModel)]="pickedTime"
+                        name="pickedTime"
+                        placeholder="Time"
+                        type="text" />
+                </mz-timepicker-container>
+            </div>
+            <div *ngIf="admin" class="col m2">
+                <mz-checkbox-container>
+                    <input mz-checkbox
+                        [label]="'Is Wedding Event?'"
+                        id="isWeddingEvent"
+                        [(ngModel)]="theEvent.isWeddingEvent"
+                        name="isWeddingEvent"
+                        type="checkbox">
+                </mz-checkbox-container>
+            </div>
+            <div *ngIf="admin" class="col m2">
+                <mz-checkbox-container>
+                    <input mz-checkbox
+                        [label]="'Is Wedding Party Event?'"
+                        id="isWeddingPartyEvent"
+                        [(ngModel)]="theEvent.isWeddingPartyEvent"
+                        name="isWeddingPartyEvent"
+                        type="checkbox">
+                </mz-checkbox-container>
+            </div>
+            <div class="col m2">
+                <mz-select-container>
+                    <select mz-select
+                        id="options-select-type"
+                        [label]="'Type'"
+                        name="eventType"
+                        [(ngModel)]="theEvent.eventType">
+                        <option class="left circle" *ngFor="let eventType of eventTypes">{{eventType}}</option>
+                    </select>
+                </mz-select-container>
+            </div>
+            <div class="col m2">
+                <mz-select-container>
+                    <select mz-select
+                        id="options-select-difficulty"
+                        [label]="'Difficulty'"
+                        name="eventDifficulty"
+                        [(ngModel)]="theEvent.eventDifficulty">
+                        <option class="left circle" *ngFor="let eventDifficulty of eventDifficulties">{{eventDifficulty}}</option>
+                    </select>
+                </mz-select-container>
+            </div>
+        </div>
+        <mz-textarea-container>
+            <i mz-icon-mdi mz-textarea-prefix
+                [icon]="'message-reply-text'">
+            </i>
+            <textarea mz-textarea mz-validation required
+                [(ngModel)]="theEvent.description"
+                [label]="'Description'"
+                id="comment-textarea"
+                name="description"
+                length="300"></textarea>
+        </mz-textarea-container>
+        <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix
+                [icon]="'google-maps'">
+            </i>
+            <app-spinner *ngIf="loadingMap"></app-spinner>
+            <input *ngIf="!loadingMap" mz-input ngx-google-places-autocomplete [options]="{
+                types: []
+                }" #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/>
+        </mz-input-container>
+        <h3>Images</h3>
+        <div *ngFor="let media of theEvent.images; index as i" class="row">
+            <div class="col m10">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'web'">
+                    </i>
+                    <input mz-input
+                        [label]="'Image Path'"
+                        [(ngModel)]="media.path"
+                        name="path{{media.mediaType}}-{{i}}"
+                        length="150"
+                        type="url"
+                        (change)="updateSwipers()">
+                </mz-input-container>
+            </div>
+            <div class="col m2">
+                <a mz-button [flat]="true" (click)="onDeleteImage(i)">
+                    <i mz-icon-mdi [icon]="'delete'" [align]="'left'"></i>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4">
+                <button mz-button type="button" (click)="onAddImage()">
+                <i mz-icon-mdi [icon]="'playlist-plus'" [align]="'left'"></i>
+                    Add Image
+                </button>
+            </div>
+        </div>
+        <h3>Videos</h3>
+        <div *ngFor="let media of theEvent.videos; index as i" class="row">
+            <div class="col m10">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'web'">
+                    </i>
+                    <input mz-input
+                        [label]="'Video Path'"
+                        [(ngModel)]="media.path"
+                        name="path{{media.mediaType}}-{{i}}"
+                        length="150"
+                        type="text"
+                        (change)="updateSwipers()">
+                </mz-input-container>
+            </div>
+            <div class="col m2">
+                <a mz-button [flat]="true" (click)="onDeleteVideo(i)">
+                    <i mz-icon-mdi [icon]="'delete'" [align]="'left'"></i>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4">
+                    <button mz-button type="button" (click)="onAddVideo()">
+                    <i mz-icon-mdi [icon]="'playlist-plus'" [align]="'left'"></i>
+                        Add Video
+                    </button>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col s4">
+                    <button mz-button>
+                    <i mz-icon-mdi [icon]="'content-save'" [align]="'left'"></i>
+                        Save Event
+                    </button>
+            </div>
+        </div>
+    </form>
+    <div *ngIf="theEvent.images.length > 0">
+        <h3>Images</h3>
+        <swiper class="swiper-container" fxFlex="auto" [config]="swiperConfig">
+            <div class="swiper-slide" *ngFor="let sm of theEvent.images">
+                <img [src]="sm.path">
+            </div>
+        </swiper>
+    </div>
+    <div *ngIf="theEvent.videos.length > 0">
+        <h3>Videos</h3>
+        <swiper class="swiper-container" fxFlex="auto" [config]="swiperConfig" (indexChange)="onIndexChange($event)">
+                <div class="swiper-slide" *ngFor="let sm of theEvent.videos">
+                    <youtube-player
+                    [videoId]="sm.path.replace('https://youtu.be/', '')"
+                    (ready)="savePlayer($event)"
+                    (change)="onStateChange($event)" 
+                >
+                </youtube-player>
+            </div>
+        </swiper>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+.modal-img {
+    display: block;
+    margin: auto;
+}
+
+.swiper-img {
+    max-width: 600px;
+    max-height: 300px;
+}
+
+#{'/deep/'} iframe {
+    display: block;
+    margin: auto;
+}

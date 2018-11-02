@@ -1,0 +1,55 @@
+
+<div *ngIf="!loading" class="container">
+    <app-spinner *ngIf="loading"></app-spinner>
+    <div *ngIf="!loading">
+        <div *ngIf="isAdmin" class="row">
+            <div class="col s4">
+                    <button mz-button type="button" (click)="changeView()">
+                    <i mz-icon-mdi [icon]="'file-find'" [align]="'left'"></i>
+                        Switch Edit View
+                    </button>
+            </div>
+        </div>
+        <h3 *ngIf="canEdit">
+            <mz-input-container>
+                <i mz-icon-mdi mz-input-prefix
+                    [icon]="'format-text'">
+                </i>
+                <input mz-input
+                    [label]="'Title'"
+                    [(ngModel)]="homeData.title"
+                    name="title"
+                    length="150"
+                    type="text">
+            </mz-input-container>
+        </h3>
+        <h3 *ngIf="!canEdit">{{homeData.title}}</h3>
+        <div class="section" *ngFor="let section of homeData.sections; index as sectionIndex">
+            <div *ngIf="canEdit" class="row">
+                <div class="col s4">
+                        <button mz-button [flat]="true" type="button" (click)="onDeleteSection(sectionIndex)">
+                        <i mz-icon-mdi [icon]="'minus'" [align]="'left'"></i>
+                            Delete Section
+                        </button>
+                </div>
+            </div>
+            <app-section [(section)]="section" [editMode]="canEdit"></app-section>
+        </div>
+        <div *ngIf="canEdit">
+                <div class="col s4">
+                        <button mz-button [flat]="true" type="button" (click)="onAddSection()">
+                        <i mz-icon-mdi [icon]="'plus'" [align]="'left'"></i>
+                            Add Section
+                        </button>
+                </div>
+        </div>
+        <div *ngIf="canEdit" class="row">
+            <div class="col s4">
+                    <button mz-button type="button" (click)="onUpdate()">
+                    <i mz-icon-mdi [icon]="'content-save'" [align]="'left'"></i>
+                        Save Home
+                    </button>
+            </div>
+        </div>
+    </div>
+</div>

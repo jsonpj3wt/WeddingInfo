@@ -1,0 +1,49 @@
+<div class="container">
+    <br />
+    <br />
+    <app-spinner *ngIf="loading"></app-spinner>
+    <form *ngIf="!loading" ngNativeValidate (ngSubmit)="onLogin()">
+        <div class="row">
+            <div class="col m3">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'email'">
+                    </i>
+                    <input mz-input
+                        [label]="'Email'"
+                        [(ngModel)]="account.email"
+                        [validate]="true"
+                        [dataError]="'Email is invalid'"
+                        [dataSuccess]="'Email is valid'"
+                        id="email"
+                        name="email"
+                        length="150"
+                        type="email">
+                </mz-input-container>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col m3">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'lock'">
+                    </i>
+                    <input mz-input
+                        [label]="'Password'"
+                        [(ngModel)]="account.password"
+                        id="password"
+                        name="password"
+                        type="password">
+                </mz-input-container>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s4">
+                    <button mz-button>
+                        Login
+                    </button>
+            </div>
+        </div>
+    </form>
+</div>

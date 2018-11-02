@@ -1,0 +1,171 @@
+<div class="container">
+    <app-spinner *ngIf="loading"></app-spinner>
+    <div *ngIf="!loading">
+        <mz-collapsible [mode]="'accordion'" [popout]="true">
+            <mz-collapsible-item>
+                <mz-collapsible-item-header>
+                    Filters
+                </mz-collapsible-item-header>
+            
+                <mz-collapsible-item-body>
+                    <div class="row">
+                        <div class="col m2">
+                            <mz-select-container>
+                                <select mz-select
+                                    id="options-select-type"
+                                    [label]="'Type'"
+                                    name="filteredEventType"
+                                    [(ngModel)]="filteredEventType">
+                                    <option class="left circle" *ngFor="let eventType of eventTypes">{{eventType}}</option>
+                                </select>
+                            </mz-select-container>
+                        </div>
+                        <div class="col m2">
+                            <mz-select-container>
+                                <select mz-select
+                                    id="options-select-difficulty"
+                                    [label]="'Type'"
+                                    name="filteredEventDifficulty"
+                                    [(ngModel)]="filteredEventDifficulty">
+                                    <option class="left circle" *ngFor="let eventDifficulty of eventDifficulties">{{eventDifficulty}}</option>
+                                </select>
+                            </mz-select-container>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col m4">
+                            <a mz-button [flat]="true" (click)="onFilter()"><i mz-icon-mdi
+                                [icon]="'filter'">
+                            </i> Filter</a> 
+                        </div>
+                    </div>
+                </mz-collapsible-item-body>
+            </mz-collapsible-item>
+        </mz-collapsible>
+        <mz-collapsible
+            [mode]="'accordion'"
+            [popout]="true">
+            <mz-collapsible-item *ngFor="let evnt of events; first as isFirst; index as eventIndex;" [active]="isFirst" >
+                <mz-collapsible-item-header>
+                {{evnt.name}} <i mz-tooltip
+                    [tooltip]="'Wedding Event'"
+                    [position]="'bottom'"
+                    [html]="true" 
+                    *ngIf="evnt.isWeddingEvent || evnt.isWeddingPartyEvent" 
+                    mz-icon-mdi 
+                    [icon]="'cake-layered'" 
+                    [align]="'center'">
+                </i>
+                </mz-collapsible-item-header>
+                <mz-collapsible-item-body>
+                <a mz-button [flat]="true" *ngIf="admin" (click)="onEdit(evnt.id)"><i mz-icon-mdi
+                    [icon]="'pencil'">
+                </i></a>
+                <a mz-button [flat]="true" *ngIf="admin" (click)="onDeleteConfirm(eventIndex)"><i mz-icon-mdi
+                    [icon]="'delete'">
+                </i></a>
+                <mz-modal #basicModal>
+                    <mz-modal-header>
+                        <h4>Confirm Delete</h4>
+                    </mz-modal-header>
+                    <mz-modal-content>
+                        Are you sure you want to delete this Event?
+                    </mz-modal-content>
+                    <mz-modal-footer>
+                        <button class="green-text" mz-button [flat]="true" mz-modal-close>No</button>
+                        <button class="red-text" mz-button [flat]="true" mz-modal-close (click)="onDelete(evnt.id)">Yes</button>
+                    </mz-modal-footer>
+                </mz-modal>
+                <p>{{evnt.description}}</p>
+                <p><i mz-icon-mdi [icon]="'clock'" [align]="'center'"></i> {{evnt.occurance | date: 'MMM d, y, h:mm a'}}</p>
+                <p style="font-size: smaller">
+                    <i mz-tooltip
+                    [tooltip]="'Event Type'"
+                    [position]="'bottom'"
+                    [html]="true"
+                    mz-icon-mdi [icon]="'map-marker'" 
+                    [align]="'center'"></i> {{eventType(eventIndex)}} 
+                    <i mz-tooltip
+                    [tooltip]="'Event Difficulty'"
+                    [position]="'bottom'"
+                    [html]="true"
+                    mz-icon-mdi [icon]="'chart-line-variant'" [align]="'center'"></i> {{eventDifficulty(eventIndex)}}
+                </p>
+                <p>
+                    <a href="https://www.google.com/maps/search/?api=1&query={{evnt.address}}" target="_blank"><i mz-icon-mdi
+                        [icon]="'web'">
+                    </i> {{evnt.address}}</a>
+                </p>
+                <app-spinner *ngIf="loadingRegister"></app-spinner>
+                <div *ngIf="!loadingRegister" class="row m-valign-wrapper">
+                    <div class="col s12 m6">
+                        
+                        <span *ngFor="let usr of evnt.guests; index as userIndex;">
+                            <mz-chip *ngIf="usr.icon"><img [src]="usr.icon"> {{userName(usr)}}</mz-chip>
+                            <mz-chip *ngIf="!usr.icon"><img src="assets/account-circle.png"> {{userName(usr)}}</mz-chip>
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                        <button
+                        mz-tooltip
+                        [tooltip]="'Remove yourself from this event.'"
+                        [position]="'bottom'"
+                        [html]="true"
+                        mz-button 
+                        type="button" 
+                        [flat]="true" 
+                        *ngIf="!canRegister" 
+                        (click)="onUnregister(evnt.id, eventIndex)">
+                            <i mz-icon-mdi [icon]="'account-remove'" [align]="'left'"></i>
+                            Remove Me
+                        </button>
+                        <button 
+                        mz-tooltip
+                        [tooltip]="'Sign Up for this event.'"
+                        [position]="'bottom'"
+                        [html]="true"
+                        mz-button 
+                        type="button" 
+                        [flat]="true" 
+                        *ngIf="canRegister" 
+                        (click)="onRegister(evnt.id, eventIndex)">
+                            <i mz-icon-mdi [icon]="'plus'" [align]="'left'"></i>
+                            Sign Up
+                        </button>
+                </div>
+                <div *ngIf="evnt.images.length > 0">
+                    <h3>Images</h3>
+                    <swiper #imageSwiper class="swiper-container" fxFlex="auto" [config]="swiperConfig" (swiperDoubleTap)="onSwiperClick(eventIndex)">
+                        <div class="swiper-slide" *ngFor="let sm of evnt.images; index as imageIndex">
+                            <img class="swiper-img modal-img" [src]="sm.path">
+                        </div>
+                    </swiper>
+                    
+                </div>
+                <div *ngIf="evnt.videos.length > 0">
+                    <h3>Videos</h3>
+                    <swiper class="swiper-container" fxFlex="auto" [config]="swiperConfig" (indexChange)="onIndexChange($event)">
+                            <div class="swiper-slide" *ngFor="let sm of evnt.videos">
+                                <youtube-player
+                                [videoId]="sm.path"
+                                (ready)="savePlayer($event)"
+                                (change)="onStateChange($event)"
+                            >
+                            </youtube-player>
+                        </div>
+                    </swiper>
+                </div>
+                </mz-collapsible-item-body>
+            </mz-collapsible-item>
+        </mz-collapsible>
+    </div>
+</div>
+<mz-modal #imageModal [fixedFooter]="true" [fullscreen]="true">
+    <mz-modal-content>
+        <img class="modal-img" [src]="modalImageSrc">
+    </mz-modal-content>
+    <mz-modal-footer>
+        <button class="green-text" mz-button [flat]="true" mz-modal-close>Close</button>
+    </mz-modal-footer>
+</mz-modal>

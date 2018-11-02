@@ -1,0 +1,18 @@
+<div class="container">
+    <app-spinner *ngIf="loading"></app-spinner>
+    <app-image-uploader [uploadInputEvent]="uploadInputEvent" [maxUploads]="100" (uploadComplete)="onUploadComplete($event)"></app-image-uploader>
+    <cdk-virtual-scroll-viewport *ngIf="!loading" class="row" style="height: 500px" itemSize="120">
+        <div *cdkVirtualFor="let url of urls; let urlIndex = index" class="col m3">
+            <img class="imgGallery" [src]="url" (dblclick)="onDisplayImageModal(urlIndex)"/>
+        </div>
+    </cdk-virtual-scroll-viewport>
+</div>
+
+<mz-modal #imageModal [fixedFooter]="true" [fullscreen]="true">
+    <mz-modal-content>
+        <img class="modal-img" [src]="modalImageSrc">
+    </mz-modal-content>
+    <mz-modal-footer>
+        <button class="green-text" mz-button [flat]="true" mz-modal-close>Close</button>
+    </mz-modal-footer>
+</mz-modal>

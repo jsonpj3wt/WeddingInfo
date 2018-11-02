@@ -1,0 +1,61 @@
+<div class="container">
+    <app-spinner *ngIf="loading"></app-spinner>
+    <form #editForm *ngIf="!loading" ngNativeValidate (ngSubmit)="onEdit()" (keydown.enter)="handleEnterKeyPress($event)">
+        <div class="row">
+            <div class="col m4">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'format-title'">
+                    </i>
+                    <input mz-input mz-validation required
+                        [label]="'Name'"
+                        [(ngModel)]="registry.name"
+                        [validate]="true"
+                        [dataError]="'name is invalid'"
+                        [dataSuccess]="'name is valid'"
+                        id="name"
+                        name="name"
+                        length="150"
+                        type="text">
+                </mz-input-container>
+            </div>
+            <div class="col m4">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'web'">
+                    </i>
+                    <input mz-input
+                        [label]="'Website'"
+                        [(ngModel)]="registry.website"
+                        id="website"
+                        name="website"
+                        length="150"
+                        type="url">
+                </mz-input-container>
+            </div>
+            <div class="col m4">
+                <mz-input-container>
+                    <i mz-icon-mdi mz-input-prefix
+                        [icon]="'web'">
+                    </i>
+                    <input mz-input
+                        [label]="'Image Url'"
+                        [(ngModel)]="registry.imageSrc"
+                        id="imgSrc"
+                        name="imgSrc"
+                        length="150"
+                        type="url">
+                </mz-input-container>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col s4">
+                    <button mz-button>
+                    <i mz-icon-mdi [icon]="'content-save'" [align]="'left'"></i>
+                        Save Registry
+                    </button>
+            </div>
+        </div>
+    </form>
+</div>

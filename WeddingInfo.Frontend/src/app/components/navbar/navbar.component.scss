@@ -1,0 +1,133 @@
+@import "../../../_variables";
+
+header {
+  @media only screen and (min-width: 1880px) {
+    .custom-hide-on-large-only {
+      display: none !important;
+    }
+  }
+
+  #{'/deep/'} {
+    .side-nav {
+      padding-bottom: 0;
+      height: 100%;
+      width: 300px;
+      
+      @media only screen and (min-width: 1880px) {
+        width: 300px;
+          transform: translateX(0) !important;
+      }
+
+      @media not screen and (min-width: 1880px) {
+        width: 0px;
+      }
+
+      .collapsible {
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+      }
+
+      .collapsible-body {
+        background: transparent;
+      }
+
+      .collapsible-header {
+        padding-left: 22px;
+      }
+    }
+
+    .sidenav-button {
+      background: #333333 !important;
+    }
+
+    .sidenav-button {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 24;
+    }
+
+    .sidenav-header {
+      background: rgba(0,0,0,0.14);
+      display: block;
+      padding-top: 10px;
+      margin-bottom: 0 !important;
+
+      a {
+        height: auto;
+      }
+    }
+
+    a {
+      i.caret {
+        float: right;
+        margin-right: 0;
+        -ms-transition: 0.2s;
+        -webkit-transition: 0.2s;
+        -o-transition:  0.2s;
+        transition: 0.2s ease-in-out;
+      }
+
+      &.active {
+        i.caret {
+          -ms-transform: rotate(180deg);
+          -webkit-transform: rotate(180deg);
+          -o-transform:  rotate(180deg);
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+
+  .angular-logo {
+    display: block;
+    margin: 0 auto;
+    width: 150px;
+  }
+
+  .materialize-logo {
+    display: block;
+    margin: -62px auto 0;
+  }
+
+  .materialize-name {
+    background: rgba(0,0,0,0.14);
+    font-weight: 200;
+    padding: 14px;
+    margin-bottom: 0;
+  }
+}
+
+main {
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+
+  @media #{$large-and-up} {
+    padding-left: 300px;
+  }
+
+  .container {
+    width: 90% !important;
+
+    @media #{$large-and-up} {
+      margin: 0 3%;
+    }
+  }
+}
+
+/* mCustomScrollbar override */
+
+#{'/deep/'} {
+  .mCSB_dragger_bar {
+    width: 8px !important;
+    border-radius: 0px !important;
+  }
+
+  .mCSB_scrollTools_vertical {
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .mCustomScrollBox {
+    padding-bottom: 30px;
+  }
+}
