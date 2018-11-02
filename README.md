@@ -1,5 +1,6 @@
 # WeddingInfo
 An Angular frontend and dotnet-core backend for hosting wedding information.
+Mobile friendly and CRM.
 
 # Getting Started
 You will need to have [dotnet core sdk](https://www.microsoft.com/net/download) and [Angular 7](https://angular.io/guide/quickstart) installed on your machine to debug this application.
