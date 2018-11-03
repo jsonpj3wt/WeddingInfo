@@ -5,6 +5,7 @@ using WeddingInfo.Domain.Context;
 using WeddingInfo.Domain.DTOs;
 using WeddingInfo.Domain.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace WeddingInfo.Domain.Commands.CreateRegistry
 {
@@ -27,7 +28,9 @@ namespace WeddingInfo.Domain.Commands.CreateRegistry
 
 		public async Task<RegistryDto> Handle(CreateRegistryCommand request, CancellationToken cancellationToken) {
 			Registry newRegistry = _mapper.Map<CreateRegistryCommand, Registry>(request);
-			await _context.Registries.AddAsync(newRegistry);
+            int count = await _context.Registries.CountAsync();
+            newRegistry.Order = count + 1;
+            await _context.Registries.AddAsync(newRegistry);
 			_context.Commit();
 			return _mapper.Map<Registry, RegistryDto>(newRegistry);
 		}

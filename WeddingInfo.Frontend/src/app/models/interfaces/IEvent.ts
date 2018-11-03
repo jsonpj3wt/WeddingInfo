@@ -4,16 +4,17 @@ import { IUser } from './IUser';
 import { IMedia } from './IMedia';
 
 export interface IEvent {
-    id: number;
-    name: string;
-    description: string;
-    occurance: Date;
     address: string;
-    guests: IUser[];
-    images: IMedia[];
-    videos: IMedia[];
-    eventType: EventType;
+    description: string;
     eventDifficulty: EventDifficulty;
+    eventType: EventType;
+    guests: IUser[];
+    id: number;
+    images: IMedia[];
     isWeddingEvent: boolean;
     isWeddingPartyEvent: boolean;
+    name: string;
+    occurance: Date;
+    order: number;
+    videos: IMedia[];
 }

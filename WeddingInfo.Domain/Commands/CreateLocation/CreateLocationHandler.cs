@@ -5,6 +5,7 @@ using WeddingInfo.Domain.Context;
 using WeddingInfo.Domain.DTOs;
 using WeddingInfo.Domain.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace WeddingInfo.Domain.Commands.CreateLocation
 {
@@ -29,8 +30,9 @@ namespace WeddingInfo.Domain.Commands.CreateLocation
 		public async Task<LocationDto> Handle(CreateLocationCommand command, CancellationToken cancellationToken)
         {
 			Location newLocation = _mapper.Map<CreateLocationCommand, Location>(command);
-
-			await _context.Locations.AddAsync(newLocation);
+            int count = await _context.Locations.CountAsync();
+            newLocation.Order = count + 1;
+            await _context.Locations.AddAsync(newLocation);
 			_context.Commit();
 			return _mapper.Map<Location, LocationDto>(newLocation);
         }

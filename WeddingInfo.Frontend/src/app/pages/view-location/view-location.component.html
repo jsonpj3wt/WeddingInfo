@@ -2,9 +2,17 @@
         <app-spinner *ngIf="loading"></app-spinner>
     <div *ngIf="!loading">
         <mz-collapsible [mode]="'accordion'" [popout]="true">
-            <mz-collapsible-item #collapsibleItem *ngFor="let loc of locations; first as isFirst; index as locIndex" [active]="isFirst" >
+            <mz-collapsible-item #collapsibleItem *ngFor="let loc of locations; first as isFirst; index as locIndex; last as isLast" [active]="isFirst" >
                 <mz-collapsible-item-header>
                 {{loc.name}}
+                <a mz-button [flat]="true" *ngIf="admin && !isFirst" (click)="onBringUp(loc.id)">
+                    <i mz-icon-mdi [icon]="'chevron-up'"></i>
+                    Move Up
+                </a>
+                <a mz-button [flat]="true" *ngIf="admin && !isLast" (click)="onLower(loc.id)">
+                    <i mz-icon-mdi [icon]="'chevron-down'"></i>
+                    Move Down
+                </a>
                 </mz-collapsible-item-header>
                 <mz-collapsible-item-body>
                 <a mz-button [flat]="true" *ngIf="admin" (click)="onEdit(loc.id)"><i mz-icon-mdi mz-input-prefix

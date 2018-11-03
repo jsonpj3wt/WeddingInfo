@@ -12,6 +12,7 @@ namespace WeddingInfo.Domain.Commands.UpdateEvent
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime Occurance { get; set; }
+        public int Order { get; set; }
         public string Address { get; set; }
 		public IList<UserDto> Guests { get; set; }
         public IList<MediaDto> Images { get; set; } = new List<MediaDto>();

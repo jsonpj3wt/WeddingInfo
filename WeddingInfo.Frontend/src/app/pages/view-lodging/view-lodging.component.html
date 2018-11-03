@@ -3,9 +3,17 @@
     <div *ngIf="!loading">
         
         <mz-collapsible [mode]="'accordion'" [popout]="true">
-            <mz-collapsible-item *ngFor="let lodging of lodgings; first as isFirst; index as lodgingIndex" [active]="isFirst">
+            <mz-collapsible-item *ngFor="let lodging of lodgings; first as isFirst; index as lodgingIndex; last as isLast" [active]="isFirst">
                 <mz-collapsible-item-header>
                 {{lodging.name}}
+                <a mz-button [flat]="true" *ngIf="admin && !isFirst" (click)="onBringUp(lodging.id)">
+                    <i mz-icon-mdi [icon]="'chevron-up'"></i>
+                    Move Up
+                </a>
+                <a mz-button [flat]="true" *ngIf="admin && !isLast" (click)="onLower(lodging.id)">
+                    <i mz-icon-mdi [icon]="'chevron-down'"></i>
+                    Move Down
+                </a>
                 </mz-collapsible-item-header>
                 <mz-collapsible-item-body>
                 <a mz-button [flat]="true" *ngIf="admin" (click)="onEdit(lodging.id)"><i mz-icon-mdi mz-input-prefix

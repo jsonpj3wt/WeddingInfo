@@ -67,27 +67,7 @@ export class ViewLodgingComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this._loading = true;
-        this._lodgingService.getAll().pipe(finalize(() => {
-            this._loading = false;
-            this.updateSwipers();
-        }), catchError(err => {
-            this._notificationService.error('Could not get RSVPs.');
-            return throwError(err);
-        })).subscribe((lodgings: ILodging[]) => {
-            if (lodgings) {
-                this._lodgings = lodgings.map(l => {
-                    return new Lodging(l);
-                });
-                setTimeout(() => {
-                    $('.collapsible-header').click(() => {
-                        this.updateSwipers();
-                    });
-                }, 500);
-            } else {
-                this._notificationService.warn('Could not successfully get RSVPs.');
-            }
-        });
+        this.getAll();
     }
 
     public get admin(): boolean {
@@ -115,6 +95,32 @@ export class ViewLodgingComponent implements OnInit {
         if (this._players.findIndex(p => p === player) === -1) {
             this._players.push(player);
         }
+    }
+
+    public onBringUp(id: number): void {
+        const eventIndex: number = this._lodgings.findIndex(e => e.id === id);
+        if (eventIndex >= 0) {
+            this._lodgings[eventIndex].order--;
+            this.saveOrder(this._lodgings[eventIndex]);
+            if (eventIndex > 0) {
+                this._lodgings[eventIndex - 1].order++;
+                this.saveOrder(this._lodgings[eventIndex]);
+            }
+        }
+        this._lodgings = this._lodgings.sort(e => e.order);
+    }
+
+    public onLower(id: number): void {
+        const eventIndex: number = this._lodgings.findIndex(e => e.id === id);
+        if (eventIndex >= 0) {
+            this._lodgings[eventIndex].order++;
+            this.saveOrder(this._lodgings[eventIndex]);
+            if (eventIndex < this._lodgings.length) {
+                this._lodgings[eventIndex + 1].order--;
+                this.saveOrder(this._lodgings[eventIndex]);
+            }
+        }
+        this._lodgings = this._lodgings.sort(e => e.order);
     }
 
     public onEdit(id: number): void {
@@ -182,6 +188,51 @@ export class ViewLodgingComponent implements OnInit {
                 scomp.directiveRef.update();
             });
         }, 500);
+    }
+
+    private getAll(): void {
+        this._loading = true;
+        this._lodgingService.getAll().pipe(finalize(() => {
+            this._loading = false;
+            this.updateSwipers();
+        }), catchError(err => {
+            this._notificationService.error('Could not get Lodging.');
+            return throwError(err);
+        })).subscribe((lodgings: ILodging[]) => {
+            if (lodgings) {
+                this._lodgings = lodgings.map(l => {
+                    return new Lodging(l);
+                }).sort(l => l.order);
+                setTimeout(() => {
+                    $('.collapsible-header').click(() => {
+                        this.updateSwipers();
+                    });
+                }, 500);
+            } else {
+                this._notificationService.warn('Could not successfully get Lodging.');
+            }
+        });
+    }
+
+    private saveOrder(lodging: ILodging): void {
+        this._loading = true;
+        this._lodgingService.update(lodging).pipe(finalize(() => {
+            this._loading = false;
+            this.updateSwipers();
+        }), catchError(err => {
+            this._notificationService.error('Could not save ordering.');
+            return throwError(err);
+        })).subscribe((logde: ILodging) => {
+            if (logde) {
+                setTimeout(() => {
+                    $('.collapsible-header').click(() => {
+                        this.updateSwipers();
+                    });
+                }, 500);
+            } else {
+                this._notificationService.warn('Could not successfully save ordering.');
+            }
+        });
     }
 
 }

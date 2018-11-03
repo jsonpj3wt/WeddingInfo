@@ -9,6 +9,7 @@ namespace WeddingInfo.Domain.Models
 		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }
+        public int Order { get; set; }
 		public DateTime Occurance { get; set; }
 		public string Address { get; set; }
 		public IList<User> Guests { get; set; } = new List<User>();

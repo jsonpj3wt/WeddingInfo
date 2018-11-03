@@ -8,7 +8,8 @@ namespace WeddingInfo.Domain.DTOs
 		public string Text { get; set; }
 		public ParallaxDto TopParallax { get; set; }
 		public ParallaxDto BottomParallax { get; set; }
-		public bool IsParallax
+        public int Order { get; set; }
+        public bool IsParallax
 		{
 			get
 			{

@@ -24,8 +24,16 @@
             </mz-input-container>
         </h3>
         <h3 *ngIf="!canEdit">{{homeData.title}}</h3>
-        <div class="section" *ngFor="let section of homeData.sections; index as sectionIndex">
+        <div class="section" *ngFor="let section of homeData.sections; index as sectionIndex; first as isFirst; last as isLast">
             <div *ngIf="canEdit" class="row">
+                <a mz-button [flat]="true" *ngIf="canEdit && !isFirst" (click)="onBringUp(section.id)">
+                    <i mz-icon-mdi [icon]="'chevron-up'"></i>
+                    Move Up
+                </a>
+                <a mz-button [flat]="true" *ngIf="canEdit && !isLast" (click)="onLower(section.id)">
+                    <i mz-icon-mdi [icon]="'chevron-down'"></i>
+                    Move Down
+                </a>
                 <div class="col s4">
                         <button mz-button [flat]="true" type="button" (click)="onDeleteSection(sectionIndex)">
                         <i mz-icon-mdi [icon]="'minus'" [align]="'left'"></i>

@@ -67,27 +67,7 @@ export class ViewLocationComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this._loading = true;
-        this._locationService.getAll().pipe(finalize(() => {
-            this._loading = false;
-            this.updateSwipers();
-        }), catchError(err => {
-            this._notificationService.error('Could not get RSVPs.');
-            return throwError(err);
-        })).subscribe((locations: ILocation[]) => {
-            if (locations) {
-                this._locations = locations.map(l => {
-                    return new Location(l);
-                });
-                setTimeout(() => {
-                    $('.collapsible-header').click(() => {
-                        this.updateSwipers();
-                    });
-                }, 500);
-            } else {
-                this._notificationService.warn('Could not successfully get RSVPs.');
-            }
-        });
+        this.getAll();
     }
 
     public get admin(): boolean {
@@ -115,6 +95,32 @@ export class ViewLocationComponent implements OnInit {
         if (this._players.findIndex(p => p === player) === -1) {
             this._players.push(player);
         }
+    }
+
+    public onBringUp(id: number): void {
+        const eventIndex: number = this._locations.findIndex(e => e.id === id);
+        if (eventIndex >= 0) {
+            this._locations[eventIndex].order--;
+            this.saveOrder(this._locations[eventIndex]);
+            if (eventIndex > 0) {
+                this._locations[eventIndex - 1].order++;
+                this.saveOrder(this._locations[eventIndex]);
+            }
+        }
+        this._locations = this._locations.sort(e => e.order);
+    }
+
+    public onLower(id: number): void {
+        const eventIndex: number = this._locations.findIndex(e => e.id === id);
+        if (eventIndex >= 0) {
+            this._locations[eventIndex].order++;
+            this.saveOrder(this._locations[eventIndex]);
+            if (eventIndex < this._locations.length) {
+                this._locations[eventIndex + 1].order--;
+                this.saveOrder(this._locations[eventIndex]);
+            }
+        }
+        this._locations = this._locations.sort(e => e.order);
     }
 
     public onEdit(id: number): void {
@@ -183,6 +189,51 @@ export class ViewLocationComponent implements OnInit {
                 scomp.directiveRef.update();
             });
         }, 500);
+    }
+
+    private getAll(): void {
+        this._loading = true;
+        this._locationService.getAll().pipe(finalize(() => {
+            this._loading = false;
+            this.updateSwipers();
+        }), catchError(err => {
+            this._notificationService.error('Could not get locations.');
+            return throwError(err);
+        })).subscribe((locations: ILocation[]) => {
+            if (locations) {
+                this._locations = locations.map(l => {
+                    return new Location(l);
+                }).sort(l => l.order);
+                setTimeout(() => {
+                    $('.collapsible-header').click(() => {
+                        this.updateSwipers();
+                    });
+                }, 500);
+            } else {
+                this._notificationService.warn('Could not successfully get locations.');
+            }
+        });
+    }
+
+    private saveOrder(loc: ILocation): void {
+        this._loading = true;
+        this._locationService.updateLocation(loc).pipe(finalize(() => {
+            this._loading = false;
+            this.updateSwipers();
+        }), catchError(err => {
+            this._notificationService.error('Could not save ordering.');
+            return throwError(err);
+        })).subscribe((location: ILocation) => {
+            if (location) {
+                setTimeout(() => {
+                    $('.collapsible-header').click(() => {
+                        this.updateSwipers();
+                    });
+                }, 500);
+            } else {
+                this._notificationService.warn('Could not successfully save ordering.');
+            }
+        });
     }
 
 }

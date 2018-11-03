@@ -38,19 +38,7 @@ export class HomeComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this._loading = true;
-        this._homeComponentService.getById(1).pipe(finalize(() => {
-            this._loading = false;
-        }), catchError(err => {
-            this._notificationService.error('Could not get Home.');
-            return throwError(err);
-        })).subscribe((home: IHomeComponent) => {
-            if (home) {
-                this._homeData = new Home(home);
-            } else {
-                this._notificationService.warn('Could not successfully get Home.');
-            }
-        });
+        this.getAll();
     }
 
     public get loading(): boolean {
@@ -93,8 +81,48 @@ export class HomeComponent implements OnInit {
         });
     }
 
+    public onBringUp(id: number): void {
+        const eventIndex: number = this._homeData.sections.findIndex(e => e.id === id);
+        if (eventIndex >= 0) {
+            this._homeData.sections[eventIndex].order--;
+            if (eventIndex > 0) {
+                this._homeData.sections[eventIndex - 1].order++;
+            }
+        }
+
+        this._homeData.sections = this._homeData.sections.sort(e => e.order);
+    }
+
+    public onLower(id: number): void {
+        const eventIndex: number = this._homeData.sections.findIndex(e => e.id === id);
+        if (eventIndex >= 0) {
+            this._homeData.sections[eventIndex].order++;
+            if (eventIndex < this._homeData.sections.length) {
+                this._homeData.sections[eventIndex + 1].order--;
+            }
+        }
+        this._homeData.sections = this._homeData.sections.sort(e => e.order);
+    }
+
     public changeView(): void {
         this._editView = !this._editView;
+    }
+
+    private getAll(): void {
+        this._loading = true;
+        this._homeComponentService.getById(1).pipe(finalize(() => {
+            this._loading = false;
+        }), catchError(err => {
+            this._notificationService.error('Could not get Home.');
+            return throwError(err);
+        })).subscribe((home: IHomeComponent) => {
+            if (home) {
+                this._homeData = new Home(home);
+                this._homeData.sections = this._homeData.sections.sort(s => s.order);
+            } else {
+                this._notificationService.warn('Could not successfully get Home.');
+            }
+        });
     }
 
 }

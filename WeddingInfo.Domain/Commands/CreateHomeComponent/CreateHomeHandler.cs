@@ -27,6 +27,7 @@ namespace WeddingInfo.Domain.Commands.CreateHomeComponent
 
 		public async Task<HomeComponentDto> Handle(CreateHomeCommand request, CancellationToken cancellationToken) {
 			HomeComponent homeComponent = _mapper.Map<CreateHomeCommand, HomeComponent>(request);
+
 			await _context.HomeComponents.AddAsync(homeComponent);
 			_context.Commit();
 			return _mapper.Map<HomeComponent, HomeComponentDto>(homeComponent);

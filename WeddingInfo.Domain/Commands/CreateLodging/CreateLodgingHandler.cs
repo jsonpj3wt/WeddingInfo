@@ -5,6 +5,7 @@ using WeddingInfo.Domain.Context;
 using WeddingInfo.Domain.DTOs;
 using WeddingInfo.Domain.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace WeddingInfo.Domain.Commands.CreateLodging
 {
@@ -29,8 +30,9 @@ namespace WeddingInfo.Domain.Commands.CreateLodging
 		public async Task<LodgingDto> Handle(CreateLodgingCommand command, CancellationToken cancellationToken)
         {
 			Lodging newLodging = _mapper.Map<CreateLodgingCommand, Lodging>(command);
-
-			await _context.Lodgings.AddAsync(newLodging);
+            int count = await _context.Lodgings.CountAsync();
+            newLodging.Order = count + 1;
+            await _context.Lodgings.AddAsync(newLodging);
 			_context.Commit();
 			return _mapper.Map<Lodging, LodgingDto>(newLodging);
         }

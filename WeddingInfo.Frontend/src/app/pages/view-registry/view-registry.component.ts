@@ -44,21 +44,7 @@ export class ViewRegistryComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this._loading = true;
-        this._registryService.getAll().pipe(finalize(() => {
-            this._loading = false;
-        }), catchError(err => {
-            this._notificationService.error('Could not get RSVPs.');
-            return throwError(err);
-        })).subscribe((registries: IRegistry[]) => {
-            if (registries) {
-                this._registries = registries.map(l => {
-                    return new Registry(l);
-                });
-            } else {
-                this._notificationService.warn('Could not successfully get RSVPs.');
-            }
-        });
+        this.getAll();
     }
 
     public get admin(): boolean {
@@ -71,6 +57,32 @@ export class ViewRegistryComponent implements OnInit {
 
     public get registries(): IRegistry[] {
         return this._registries;
+    }
+
+    public onBringUp(id: number): void {
+        const eventIndex: number = this._registries.findIndex(e => e.id === id);
+        if (eventIndex >= 0) {
+            this._registries[eventIndex].order--;
+            this.saveOrder(this._registries[eventIndex]);
+            if (eventIndex > 0) {
+                this._registries[eventIndex - 1].order++;
+                this.saveOrder(this._registries[eventIndex]);
+            }
+        }
+        this._registries = this._registries.sort(e => e.order);
+    }
+
+    public onLower(id: number): void {
+        const eventIndex: number = this._registries.findIndex(e => e.id === id);
+        if (eventIndex >= 0) {
+            this._registries[eventIndex].order++;
+            this.saveOrder(this._registries[eventIndex]);
+            if (eventIndex < this._registries.length) {
+                this._registries[eventIndex + 1].order--;
+                this.saveOrder(this._registries[eventIndex]);
+            }
+        }
+        this._registries = this._registries.sort(e => e.order);
     }
 
     public onEdit(id: number) {
@@ -104,6 +116,38 @@ export class ViewRegistryComponent implements OnInit {
                 this._notificationService.success('Registry Deleted!');
             } else {
                 this._notificationService.warn('Could not successfully delete Registry.');
+            }
+        });
+    }
+
+    private getAll(): void {
+        this._loading = true;
+        this._registryService.getAll().pipe(finalize(() => {
+            this._loading = false;
+        }), catchError(err => {
+            this._notificationService.error('Could not get registries.');
+            return throwError(err);
+        })).subscribe((registries: IRegistry[]) => {
+            if (registries) {
+                this._registries = registries.map(l => {
+                    return new Registry(l);
+                }).sort(r => r.order);
+            } else {
+                this._notificationService.warn('Could not successfully get registries.');
+            }
+        });
+    }
+
+    private saveOrder(registry: IRegistry): void {
+        this._loading = true;
+        this._registryService.update(registry).pipe(finalize(() => {
+            this._loading = false;
+        }), catchError(err => {
+            this._notificationService.error('Could not save ordering.');
+            return throwError(err);
+        })).subscribe((reg: IRegistry) => {
+            if (!reg) {
+                this._notificationService.warn('Could not successfully save ordering.');
             }
         });
     }

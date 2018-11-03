@@ -1,10 +1,11 @@
 import { IParallax } from './IParallax';
 
 export interface ISection {
-    id: number;
+    bottomParallax: IParallax;
     header: string;
+    id: number;
+    isParallax: boolean;
+    order: number;
     text: string;
     topParallax: IParallax;
-    bottomParallax: IParallax;
-    isParallax: boolean;
 }

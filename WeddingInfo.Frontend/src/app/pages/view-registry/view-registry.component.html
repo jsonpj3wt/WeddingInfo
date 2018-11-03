@@ -2,9 +2,17 @@
         <app-spinner *ngIf="loading"></app-spinner>
     <div *ngIf="!loading">
         <p>Below are the list of registries.</p>
-        <div class="row registry-row" *ngFor="let registry of registries; index as registryIndex">
+        <div class="row registry-row" *ngFor="let registry of registries; index as registryIndex; first as isFirst; last as isLast">
             <a class="registry-row" mz-button [flat]="true" [href]="registry.website">
             <img [src]="registry.imageSrc" />
+            </a>
+            <a mz-button [flat]="true" *ngIf="admin && !isFirst" (click)="onBringUp(registry.id)">
+                <i mz-icon-mdi [icon]="'chevron-up'"></i>
+                Move Up
+            </a>
+            <a mz-button [flat]="true" *ngIf="admin && !isLast" (click)="onLower(registry.id)">
+                <i mz-icon-mdi [icon]="'chevron-down'"></i>
+                Move Down
             </a>
             <a mz-button [flat]="true" *ngIf="admin" (click)="onEdit(registry.id)"><i mz-icon-mdi mz-input-prefix
                 [icon]="'pencil'">

@@ -8,6 +8,7 @@ namespace WeddingInfo.Domain.DTOs
 		public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
+        public int Order { get; set; }
         public string Website { get; set; }
 		public IList<MediaDto> Images { get; set; } = new List<MediaDto>();
         public IList<MediaDto> Videos { get; set; } = new List<MediaDto>();

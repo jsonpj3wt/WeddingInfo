@@ -5,6 +5,7 @@ using WeddingInfo.Domain.Context;
 using WeddingInfo.Domain.DTOs;
 using WeddingInfo.Domain.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace WeddingInfo.Domain.Commands.CreateEvent
 {
@@ -27,6 +28,8 @@ namespace WeddingInfo.Domain.Commands.CreateEvent
 
 		public async Task<EventDto> Handle(CreateEventCommand request, CancellationToken cancellationToken) {
 			Event newEvent = _mapper.Map<CreateEventCommand, Event>(request);
+            int count = await _context.Events.CountAsync();
+            newEvent.Order = count + 1;
 			await _context.Events.AddAsync(newEvent);
 			_context.Commit();
 			return _mapper.Map<Event, EventDto>(newEvent);

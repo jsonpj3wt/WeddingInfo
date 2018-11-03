@@ -10,6 +10,7 @@ namespace WeddingInfo.Domain.DTOs
         public string Name { get; set; }
 		public string Description { get; set; }
         public DateTime Occurance { get; set; }
+        public int Order { get; set; }
         public string Address { get; set; }
         public IList<UserDto> Guests { get; set; } = new List<UserDto>();
 		public IList<MediaDto> Images { get; set; } = new List<MediaDto>();

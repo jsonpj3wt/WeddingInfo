@@ -153,7 +153,7 @@ export class ViewEventComponent implements OnInit {
     public get filteredWeddingType(): string {
         return this._filteredWeddingType;
     }
-    
+
     public set filteredWeddingType(v: string) {
         this._filteredWeddingType = v;
         this._filteredEventType = null;
@@ -203,7 +203,33 @@ export class ViewEventComponent implements OnInit {
         }
     }
 
-    public onEdit(id: number) {
+    public onBringUp(id: number): void {
+        const eventIndex: number = this._events.findIndex(e => e.id === id);
+        if (eventIndex >= 0) {
+            this._events[eventIndex].order--;
+            this.saveOrder(this._events[eventIndex]);
+            if (eventIndex > 0) {
+                this._events[eventIndex - 1].order++;
+                this.saveOrder(this._events[eventIndex]);
+            }
+        }
+        this._events = this._events.sort(e => e.order);
+    }
+
+    public onLower(id: number): void {
+        const eventIndex: number = this._events.findIndex(e => e.id === id);
+        if (eventIndex >= 0) {
+            this._events[eventIndex].order++;
+            this.saveOrder(this._events[eventIndex]);
+            if (eventIndex < this._events.length) {
+                this._events[eventIndex + 1].order--;
+                this.saveOrder(this._events[eventIndex]);
+            }
+        }
+        this._events = this._events.sort(e => e.order);
+    }
+
+    public onEdit(id: number): void {
         this._router.navigate(['editEvent/' + id]);
     }
 
@@ -323,7 +349,7 @@ export class ViewEventComponent implements OnInit {
             this._loading = false;
             this.updateSwipers();
         }), catchError(err => {
-            this._notificationService.error('Could not get RSVPs.');
+            this._notificationService.error('Could not get events.');
             return throwError(err);
         })).subscribe((events: IEvent[]) => {
             if (events) {
@@ -331,7 +357,7 @@ export class ViewEventComponent implements OnInit {
                     return new Event(l);
                 });
             } else {
-                this._notificationService.warn('Could not successfully get RSVPs.');
+                this._notificationService.warn('Could not successfully get events.');
             }
         });
     }
@@ -342,7 +368,7 @@ export class ViewEventComponent implements OnInit {
             this._loading = false;
             this.updateSwipers();
         }), catchError(err => {
-            this._notificationService.error('Could not get RSVPs.');
+            this._notificationService.error('Could not get events.');
             return throwError(err);
         })).subscribe((events: IEvent[]) => {
             if (events) {
@@ -350,7 +376,7 @@ export class ViewEventComponent implements OnInit {
                     return new Event(l);
                 });
             } else {
-                this._notificationService.warn('Could not successfully get RSVPs.');
+                this._notificationService.warn('Could not successfully get events.');
             }
         });
     }
@@ -361,7 +387,7 @@ export class ViewEventComponent implements OnInit {
             this._loading = false;
             this.updateSwipers();
         }), catchError(err => {
-            this._notificationService.error('Could not get RSVPs.');
+            this._notificationService.error('Could not get events.');
             return throwError(err);
         })).subscribe((events: IEvent[]) => {
             if (events) {
@@ -369,7 +395,7 @@ export class ViewEventComponent implements OnInit {
                     return new Event(l);
                 });
             } else {
-                this._notificationService.warn('Could not successfully get RSVPs.');
+                this._notificationService.warn('Could not successfully get events.');
             }
         });
     }
@@ -380,20 +406,41 @@ export class ViewEventComponent implements OnInit {
             this._loading = false;
             this.updateSwipers();
         }), catchError(err => {
-            this._notificationService.error('Could not get RSVPs.');
+            this._notificationService.error('Could not get events.');
             return throwError(err);
         })).subscribe((events: IEvent[]) => {
             if (events) {
                 this._events = events.map(l => {
                     return new Event(l);
-                });
+                }).sort(e => e.order);
                 setTimeout(() => {
                     $('.collapsible-header').click(() => {
                         this.updateSwipers();
                     });
                 }, 500);
             } else {
-                this._notificationService.warn('Could not successfully get RSVPs.');
+                this._notificationService.warn('Could not successfully get events.');
+            }
+        });
+    }
+
+    private saveOrder(evnt: IEvent): void {
+        this._loading = true;
+        this._eventService.updateEvent(evnt).pipe(finalize(() => {
+            this._loading = false;
+            this.updateSwipers();
+        }), catchError(err => {
+            this._notificationService.error('Could not save ordering.');
+            return throwError(err);
+        })).subscribe((event: IEvent) => {
+            if (event) {
+                setTimeout(() => {
+                    $('.collapsible-header').click(() => {
+                        this.updateSwipers();
+                    });
+                }, 500);
+            } else {
+                this._notificationService.warn('Could not successfully save ordering.');
             }
         });
     }
